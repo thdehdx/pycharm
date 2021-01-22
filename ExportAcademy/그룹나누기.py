@@ -36,30 +36,31 @@ print(f)                                문자열 1개 출력하는 예제
       단, 채점을 위해 코드를 제출하실 때에는 반드시 아래 구문을 지우거나 주석 처리 하셔야 합니다.
 '''
 #sys.stdin = open("input.txt", "r")
-#a:리스트, l:시작 인덱스, r=끝 인덱스
-def quickSort(a,l,r):
-    if l<r:
-        s=partition(a,l,r)#pivot위치 반환
-        if l>n//2:
-            return 0
-        quickSort(a,l,s-1)
-        quickSort(a,s+1,r)
-#Hoare-Partition 알고리즘(호어 파티션 알고리즘)
-def partition(a,l,r):
-    p=a[l]
-    i= l+1
-    j = r
-    while i <= j:
-        while(i<=j and a[i]<=p): i+=1
-        while(i<=j and a[j]>=p): j-=1
-        if i<=j:
-            a[i],a[j]=a[j],a[i]
-    a[l],a[j]=a[j],a[l]
-    return j
+def Make_Set(x):
+    global p
+    p[x]=x
+def Find_Set(x):
+    if x==p[x]:return x
+    else: return Find_Set(p[x])
+def Union(x,y):
+    global p
+    p[Find_Set(y)] = Find_Set(x)
 T = int(input())
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    n=int(input())
-    a=list(map(int,input().split()))
-    quickSort(a,0,len(a)-1)
-    print("#"+str(test_case)+" "+str(a[n//2]))
+    n,m=map(int,input().split())
+    letter = list(map(int, input().split()))
+    p=[0]*(n+1)
+
+    for i in range(1,n+1):
+        Make_Set(i)
+
+    for i in range(0,len(letter),2):#그룹탐색
+        start=letter[i]
+        end=letter[i+1]
+        Union(start,end)
+
+    result=[]
+    for i in range(len(p)):
+        result.append(Find_Set(i))
+    print("#"+str(test_case)+" "+str(len(set(result))-1))

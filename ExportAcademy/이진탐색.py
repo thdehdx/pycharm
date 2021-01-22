@@ -44,12 +44,13 @@ for test_case in range(1, T + 1):
     a=list(map(int,input().split()))
     b=list(map(int,input().split()))
     a.sort()
-    start=0
     cnt=0
     for target in b:
+        state="null"
         if a[-1]<target:
             continue
-        end=len(a)
+        start=0
+        end=len(a)-1
         mid=(start+end)//2
         while(1):
             mid=(start+end)//2
@@ -57,9 +58,18 @@ for test_case in range(1, T + 1):
                 break
             elif a[mid]==target:
                 cnt+=1
+                print(target)
                 break
             elif a[mid]<target:
+                if state=="right":
+                    break
+                else:
+                    state="right"
                 start = mid+1
             elif a[mid]>target:
+                if state=="left":
+                    break
+                else:
+                    state="left"
                 end=mid-1
     print("#"+str(test_case)+" "+str(cnt))

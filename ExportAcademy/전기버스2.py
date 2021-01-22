@@ -21,8 +21,6 @@ print(c, d, e)                          실수형 변수 3개 출력하는 예�
 print(f)                                문자열 1개 출력하는 예제
 '''
 
-#import sys
-
 
 '''
       아래의 구문은 input.txt 를 read only 형식으로 연 후,
@@ -36,30 +34,37 @@ print(f)                                문자열 1개 출력하는 예제
       단, 채점을 위해 코드를 제출하실 때에는 반드시 아래 구문을 지우거나 주석 처리 하셔야 합니다.
 '''
 #sys.stdin = open("input.txt", "r")
-#a:리스트, l:시작 인덱스, r=끝 인덱스
-def quickSort(a,l,r):
-    if l<r:
-        s=partition(a,l,r)#pivot위치 반환
-        if l>n//2:
-            return 0
-        quickSort(a,l,s-1)
-        quickSort(a,s+1,r)
-#Hoare-Partition 알고리즘(호어 파티션 알고리즘)
-def partition(a,l,r):
-    p=a[l]
-    i= l+1
-    j = r
-    while i <= j:
-        while(i<=j and a[i]<=p): i+=1
-        while(i<=j and a[j]>=p): j-=1
-        if i<=j:
-            a[i],a[j]=a[j],a[i]
-    a[l],a[j]=a[j],a[l]
-    return j
-T = int(input())
-# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
-for test_case in range(1, T + 1):
-    n=int(input())
-    a=list(map(int,input().split()))
-    quickSort(a,0,len(a)-1)
-    print("#"+str(test_case)+" "+str(a[n//2]))
+
+def DFS(num):
+    global cnt, result
+
+    print(num)
+    print(cnt)
+
+    if num >= N:
+        if result > cnt:
+            result = cnt
+        return
+
+    if result < cnt:
+        return
+
+    start = num
+    life = Data[start]
+
+    for i in range(start+life, start, -1):
+        cnt += 1
+        DFS(i)
+        cnt -= 1
+
+
+TC = int(input())
+for tc in range(1,TC+1):
+    Data = list(map(int, input().split()))
+    N = Data[0]
+    result = 987654321
+    cnt = 0
+
+    DFS(1)
+
+    print('#%d %d'%(tc, result-1))
